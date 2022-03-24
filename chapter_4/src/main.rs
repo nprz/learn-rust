@@ -84,6 +84,50 @@ fn main() {
     // dangling pointer: a pointer that references a location in memory that may have been given to someone else -- by freeing
     // some memory while preserving a pointer to that memory.
     // In Rust, the compiler guarantees that references will never be dangling references
+
+    // 4.3 - The Slice Type
+    // Slices let you reference a contiguous sequence of elements in a collection rather than the whole collection 
+    // TL;DR: &str is an immutable reference
+
+    // A string slice is a reference to part of a String
+    let s8 = String::from("hello world");
+
+    // Rather than a reference to the entire String, hello is a reference to a portion of the String
+    // staring index is inclusive, ending index is exclusive
+    let _hello = &s8[0..5];
+    let _world = &s8[6..11];
+
+    // Internally, the slice data structure stores the starting position and the length of the slice, 
+    // which corresponds to ending_index minus starting_index
+    // The type that signifies “string slice” is written as &str
+
+    // The type of s_literal here is &str: it’s a slice pointing to that specific point of the binary. 
+    //  This is also why string literals are immutable; &str is an immutable reference.
+    let s_literal = "hello world!"; 
+    
+    // first_word can take a slice from a String
+    let word1 = first_word(&s8[0..6]);
+    // an entire slice of a String
+    let word2 = first_word(&s8[..]);
+    // or a reference to a string, which is equivalent to a whole slice of String
+    // (This flexibility takes advantage of deref coercions)
+    let word3 = first_word(&s8);
+
+    // first_word works on slices of string literals, partial
+    let word4 = first_word(&s_literal[0..6]);
+    // or whole
+    let word5 = first_word(&s_literal[..]);
+    // string literals are string slices, so the slice syntax is not necessary.
+    let word6 = first_word(s_literal);
+
+    println!("{}, {}, {}, {}, {}, {}", word1, word2, word3, word4, word5, word6);
+
+    // Slices can work on arrays and probably other collections too.
+    let a = [1, 2, 3, 4, 5];
+    let slice = &a[1..3];
+    assert_eq!(slice, &[2, 3]);
+    // This slice has the type &[i32]. 
+    // It works the same way as string slices do, by storing a reference to the first element and a length
 }
 
 fn takes_ownership(some_string: String) {
@@ -106,4 +150,16 @@ fn calculate_length(s: &String) -> usize {
 
 fn change(some_string: &mut String) {
     some_string.push_str(", world");
+}
+
+fn first_word(s: &str) -> &str {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+
+    &s[..]
 }
