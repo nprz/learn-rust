@@ -97,7 +97,21 @@ fn main() {
         }
     }
 
-    value_in_cents(Coin::Quarter(UsState::Alaska));
+    // the inner state value of the enum can be accessed like so,
+    // docs refer to this as binding the values that mathc the pattern
+    value_in_cents(Coin::Quarter(UsState::Alaska)); 
 
-    // values 
+    fn plus_one(x: Option<i32>) -> Option<i32> {
+        match x {
+            None => None,
+            Some(i) => Some(i + 1),
+        }
+    }
+
+    let five = Some(5);
+    #[derive(Debug)]
+    let six = plus_one(five);
+    let none = plus_one(None);
+
+    println!("The value of six: {:?}. The value of none {:?}", six, none);
 }   
