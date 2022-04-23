@@ -123,4 +123,21 @@ fn main() {
     // 6.3 Concise Control Flow with id let
     // The if let syntax lets you combine if and let into a less verbose way to handle values that match one pattern
     // while ignoring the rest
+    
+    // this
+    let config_max = Some(8u8);
+    match config_max {
+        Some(max) => println!("The maximum is configured to be {}", max),
+        _ => (),
+    }
+
+    // can be shortened to
+    if let Some(max) = config_max {
+        println!("The maximum is configured to be {}", max)
+    }
+    
+    // The code in the if let block isn’t run if the value doesn’t match the pattern.
+    // you can think of `if let` as syntax sugar for a match that runs code when the value matches one pattern and then ignores all other values
+    // We can include an else with an if let. else works the same as _ when using match
+
 }   
