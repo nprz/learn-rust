@@ -104,14 +104,23 @@ fn main() {
     fn plus_one(x: Option<i32>) -> Option<i32> {
         match x {
             None => None,
+            // The i binds to the value contained in Some, so i takes the value 5
             Some(i) => Some(i + 1),
         }
     }
 
     let five = Some(5);
-    #[derive(Debug)]
     let six = plus_one(five);
     let none = plus_one(None);
 
     println!("The value of six: {:?}. The value of none {:?}", six, none);
+
+    // Matches in Rust are exhaustive: we must exhaust every last possibility in order for the code to be valid.
+    // other can be used as a catch all value that covers all other possibilities. Note the catch all arm must be 
+    // put last because the patterns are evaluated in order.
+    // _ is a special pattern that matches any value and does not bind to that value. This tells rust we are not going to use the value
+
+    // 6.3 Concise Control Flow with id let
+    // The if let syntax lets you combine if and let into a less verbose way to handle values that match one pattern
+    // while ignoring the rest
 }   
